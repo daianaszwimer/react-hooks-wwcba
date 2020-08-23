@@ -22,10 +22,11 @@
 					<ul style="font-size: 35px;">
 						<li>Intro a React</li>
 						<li>¿Qué es un Hook?</li>
-						<li>API</li>
-						<li>Antes vs Después - useState</li>
-						<li>Antes vs Después - useEffect</li>
 						<li>Reglas</li>
+						<li>API</li>
+						<li>useState - Antes vs Después</li>
+						<li>Ciclos de vida de un componente</li>
+						<li>useEffect - Antes vs Después</li>
 						<li>Preguntas!</li>
 					</ul>
 					<p>
@@ -46,7 +47,8 @@
 					<aside class="notes">
 						React es una biblioteca de JavaScript para construir interfaces de usuario. Permite componer UIs complejas de pequeñas y aisladas piezas de código llamadas “componentes”.
 						Les mentiría si les dijera que en menos de una hora ahora mismo vamos a aprender qué es React y vamos a poder armar una aplicación desde 0 porque una biblioteca tan compleja como React es casi imposible aprenderla en esa cantidad de tiempo.
-						Vamos a hacer una intro para poder entender los Hooks y para que, cuando el día de mañana se pongan a leer la documentación y levanten su aplicación se acuerden y digan ah, este concepto lo dijo Daiu en la charla de WWCBA y, si el objetivo de hoy se cumple, deberían poder entender todo de manera mucho más fácil
+						Vamos a hacer una intro para poder entender los Hooks y para que, cuando el día de mañana se pongan a leer la documentación y levanten su aplicación se acuerden y digan ah, este concepto lo escuché en una charla y, si el objetivo de hoy se cumple, deberían poder entender todo de manera mucho más fácil
+						Ahora vamos a analizar un poco de código para conocer esta biblioteca
 					</aside>
 				</section>
 				<section data-auto-animate>
@@ -187,9 +189,10 @@
 							);
 					</code></pre>
 					<aside class="notes">
-						El estao se declara en el constructor
+						El estado se declara en el constructor
 						El estado al igual que las props es un objeto de JS, con la diferencia que este sí puede ser modificado llamando a una función llamada setState.
-						setState recibe un objeto con lo que queremos modificar del estado
+						setState recibe un objeto con lo que queremos modificar del estado. Si vamos a modificar el estado dependiendo del valor del estado en vez de un objeto le pasamos una función que recibe como parámetro el estado anterior.
+						Esto se hace porque setState es asincrónico y no se puede confiar en los valores que está en this.state
 					</aside>
 				</section>
 				<section data-auto-animate data-background-iframe="https://codepen.io/daiuszw/pen/mdPRwYB?editors=0011">
@@ -247,6 +250,154 @@
 					<aside class="notes">
 						Todos estos son los Hooks que React nos provee, y además de todos estos no se olviden que nosotros también podemos crear hooks personalizados si quisiéramos
 						Hoy vamos a ver primer useState y después useEffect
+					</aside>
+				</section>
+				<section data-auto-animate>
+					<h2>useState</h2>
+					<aside class="notes">
+						useState es un hook que nos permite agregarle estado a un componente funcional.
+						Es una función que recibe un argumento y retorna un array
+						Vamos a agarrar los mismos componentes que teníamos antes y los vamos a transformar en componentes funcionales así le damos sentido a esto que acabo de decir
+					</aside>
+				</section>
+				<section data-auto-animate>
+					<h2>useState</h2>
+					<pre><code data-trim data-line-numbers="|1|3|5,14">
+							import { useState } from 'react';
+							const Square = (props) => {
+							  const [contador, setContador] = useState(0)
+							  const handleChange = () => {
+								setContador(contador+1)
+							  }
+							  return (
+							    &lt;div&gt;
+								  &lt;button className="square" onClick={handleChange}&gt;
+								    {props.value} Texto
+								    Texto adicional que se renderiza
+								  &lt;/button&gt;
+								  &lt;span className="text"&gt;
+								    Hiciste click {contador} veces
+								  &lt;/span&gt;
+							    &lt;/div&gt;
+							  );
+							}
+							class Game extends React.Component {
+							  render() {
+								return (
+								  &lt;div className="game"&gt;
+									&lt;Square value="Cuadrado 1"/&gt;
+									&lt;Square value="Cuadrado 2"/&gt;
+									&lt;Square value="Cuadrado 3"/&gt;
+								  &lt;/div&gt;
+								);
+							  }
+							}
+
+							ReactDOM.render(
+							  &lt;Game /&gt;,
+							  document.getElementById('root')
+							);
+					</code></pre>
+					<aside class="notes">
+						Bueno ahora Square pasó de ser un componente de clase a un componente funcional, como ven hay un par de diferencias pero nada raro, y Square es literalmente una función de JS
+						En esta línea vemos que se usa el hook useState. Como les dije, es una función, su argumento es el valor inicial. De la misma manera que antes declarábamos el estado en el constructor y lo seteábamos en 0, acá el pasamos a la función un 0 y hace exactamente lo mismo.
+						Nos inicializa la variable contador en 0. Después a la izquierda vemos lo que se llama array destructuring. En la primer posición del array se guarda la variable y en la segunda posición, la función que actualiza la función. Si quieren pueden pensarlo como una tupla también pero la posta es que es useState nos retorna un array de dos elementos
+						Si quisieramos tener más de una valor, simplemente llamamos de vuelta a useState y guardamos lo que retorna como hicimos
+						Acá lo que hacemos es importar la función, nada raro al momento. Si queremos podemos usar React.useState también
+						Y ahí se ve donde leemos a la variable contador y donde la escribimos.
+					</aside>
+				</section>
+				<section data-auto-animate data-background-iframe="https://codepen.io/daiuszw/pen/NWNdagN?editors=0010">
+					<aside class="notes">
+						Bien, esto que vemos acá es cómo se maneja el estado con componentes de clase. Ahora que aprendimos esto, podemos ir a ver los hooks
+					</aside>
+				</section>
+				<section data-auto-animate>
+					<h4>useState: Antes vs Después</h4>
+					<div style="display: flex; flex-direction: row;justify-content: center;height: 600px;">
+						<pre style="width: 70%;"><code data-trim>
+								class Square extends React.Component {
+								  constructor(props) {
+									super(props);
+									this.state = {
+									  contador: 0,
+									};
+								  }
+								  handleChange = () => {
+									this.setState(prevState => ({
+									  contador: prevState.contador+1
+									}));
+								  }
+								  render() {
+									return (
+									  &lt;div&gt;
+										&lt;button className="square" onClick={this.handleChange}&gt;
+										  {this.props.value} Texto
+										  Texto adicional que se renderiza
+										&lt;/button&gt;
+										&lt;span className="text"&gt;
+										  Hiciste click {this.state.contador} veces
+										&lt;/span&gt;
+									  &lt;/div&gt;
+									);
+								  }
+								}
+								class Game extends React.Component {
+								  render() {
+									return (
+									  &lt;div className="game"&gt;
+										&lt;Square value="Cuadrado 1"/&gt;
+										&lt;Square value="Cuadrado 2"/&gt;
+										&lt;Square value="Cuadrado 3"/&gt;
+									  &lt;/div&gt;
+									);
+								  }
+								}
+
+								ReactDOM.render(
+								  &lt;Game /&gt;,
+								  document.getElementById('root')
+								);
+						</code></pre>
+						<pre style="width: 70%;"><code data-trim>
+							import { useState } from 'react';
+							const Square = (props) => {
+							  const [contador, setContador] = useState(0)
+							  const handleChange = () => {
+								setContador(contador+1)
+							  }
+							  return (
+							    &lt;div&gt;
+								  &lt;button className="square" onClick={handleChange}&gt;
+								    {props.value} Texto
+								    Texto adicional que se renderiza
+								  &lt;/button&gt;
+								  &lt;span className="text"&gt;
+								    Hiciste click {contador} veces
+								  &lt;/span&gt;
+							    &lt;/div&gt;
+							  );
+							}
+							class Game extends React.Component {
+							  render() {
+								return (
+								  &lt;div className="game"&gt;
+									&lt;Square value="Cuadrado 1"/&gt;
+									&lt;Square value="Cuadrado 2"/&gt;
+									&lt;Square value="Cuadrado 3"/&gt;
+								  &lt;/div&gt;
+								);
+							  }
+							}
+
+							ReactDOM.render(
+							  &lt;Game /&gt;,
+							  document.getElementById('root')
+							);
+					</code></pre>
+					</div>
+					<aside class="notes">
+						Analicemos cómo hacíamos antes y cómo hacemos ahora.
 					</aside>
 				</section>
 			</div>
