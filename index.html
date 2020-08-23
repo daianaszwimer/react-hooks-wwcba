@@ -21,8 +21,6 @@
 					</h3>
 					<ul style="font-size: 35px;">
 						<li>Intro a React</li>
-						<li>React sin Hooks</li>
-						<li>¿Por qué Hooks?</li>
 						<li>¿Qué es un Hook?</li>
 						<li>API</li>
 						<li>Antes vs Después - useState</li>
@@ -92,6 +90,117 @@
 					</aside>
 				</section>
 				<section data-auto-animate data-background-iframe="https://codepen.io/daiuszw/pen/bGpgWPq?editors=0010">
+					<aside class="notes">
+						Listo, funciona, ya podemos poner React en el CV :P
+						Pero no hace mucha gracia esto, así que le vamos a agregar interacción al componente
+						Vamos a hacer que cuando clickees el botón, nos muestre un cartel con la prop que nos llega
+					</aside>
+				</section>
+				<section data-auto-animate>
+					<h2>Agreguemos interacción</h2>
+					<pre><code data-trim data-line-numbers="|2,3,4|2,3,4,7">
+							class Square extends React.Component {
+							  showMessage = () => {
+							    alert(this.props.value + "!!")
+							  }
+							  render() {
+								return (
+								  &lt;button className="square" onClick={this.showMessage}&gt;
+									{this.props.value} Texto
+									Texto adicional que se renderiza
+								  &lt;/button&gt;
+								);
+							  }
+							}
+							class Game extends React.Component {
+							  render() {
+								return (
+								  &lt;div className="game"&gt;
+									&lt;Square value="Cuadrado 1"/&gt;
+									&lt;Square value="Cuadrado 2"/&gt;
+									&lt;Square value="Cuadrado 3"/&gt;
+								  &lt;/div&gt;
+								);
+							  }
+							}
+
+							ReactDOM.render(
+							  &lt;Game /&gt;,
+							  document.getElementById('root')
+							);
+					</code></pre>
+					<aside class="notes">
+						Acá entonces creamos una función que se llama showMessage que nos muestra un alert y le vamos a decir al botón que cuando se haga click, que se ejecute nuestra función
+						Entonces cada vez que hagamos click en el botón de ese componente se va a ejecutar nuestra función
+						La sintaxis que usamos para crear la función se llama arrow function y suele ser lo más cómodo por un tema de bindings y contextos y cosas de las que no llegamos a hablar hoy pero que si quieren investigar es muy copado
+					</aside>
+				</section>
+				<section data-auto-animate data-background-iframe="https://codepen.io/daiuszw/pen/VwaPWXj?editors=0011">
+					<aside class="notes">
+						Genial, anda. Ahora queremos que cada cuadrado ademas de tener un botón, tenga un contador que nos diga cuántas veces presionamos el botón. Para hacer esto tenemos que implementar estado interno
+					</aside>
+				</section>
+				<section data-auto-animate>
+					<h2>Agreguemos estado</h2>
+					<pre><code data-trim data-line-numbers="|4,5,6|9,10,11|21">
+							class Square extends React.Component {
+							  constructor(props) {
+								super(props);
+								this.state = {
+								  contador: 0,
+								};
+							  }
+							  handleChange = () => {
+								this.setState(prevState => ({
+								  contador: prevState.contador+1
+								}));
+							  }
+							  render() {
+								return (
+								  &lt;div&gt;
+								    &lt;button className="square" onClick={this.handleChange}&gt;
+									  {this.props.value} Texto
+									  Texto adicional que se renderiza
+								    &lt;/button&gt;
+									&lt;span className="text"&gt;
+									  Hiciste click {this.state.contador} veces
+									&lt;/span&gt;
+								  &lt;/div&gt;
+								);
+							  }
+							}
+							class Game extends React.Component {
+							  render() {
+								return (
+								  &lt;div className="game"&gt;
+									&lt;Square value="Cuadrado 1"/&gt;
+									&lt;Square value="Cuadrado 2"/&gt;
+									&lt;Square value="Cuadrado 3"/&gt;
+								  &lt;/div&gt;
+								);
+							  }
+							}
+
+							ReactDOM.render(
+							  &lt;Game /&gt;,
+							  document.getElementById('root')
+							);
+					</code></pre>
+					<aside class="notes">
+						El estao se declara en el constructor
+						El estado al igual que las props es un objeto de JS, con la diferencia que este sí puede ser modificado llamando a una función llamada setState.
+						setState recibe un objeto con lo que queremos modificar del estado
+					</aside>
+				</section>
+				<section data-auto-animate data-background-iframe="https://codepen.io/daiuszw/pen/mdPRwYB?editors=0011">
+					<aside class="notes">
+						Bien, esto que vemos acá es cómo se maneja el estado con componentes de clase. Ahora que aprendimos esto, podemos ir a ver los hooks
+					</aside>
+				</section>
+				<section data-auto-animate data-background-iframe="https://codepen.io/daiuszw/pen/mdPRwYB?editors=0011">
+					<aside class="notes">
+						Bien, esto que vemos acá es cómo se maneja el estado con componentes de clase. Ahora que aprendimos esto, podemos ir a ver los hooks
+					</aside>
 				</section>
 			</div>
 		</div>
