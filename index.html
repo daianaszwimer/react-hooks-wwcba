@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>React Hooks</title>
+		<link rel="stylesheet" href="reveal.js/dist/reset.css">
+		<link rel="stylesheet" href="reveal.js/dist/reveal.css">
+		<link rel="stylesheet" href="reveal.js/dist/theme/blood.css" id="theme">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" href="reveal.js/plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h2>React Hooks</h2>
+				</section>
+				<section>
+					<h3>
+						Te lo resumo... Así nomás
+					</h3>
+					<ul style="font-size: 35px;">
+						<li>Intro a React</li>
+						<li>React sin Hooks</li>
+						<li>¿Por qué Hooks?</li>
+						<li>¿Qué es un Hook?</li>
+						<li>API</li>
+						<li>Antes vs Después - useState</li>
+						<li>Antes vs Después - useEffect</li>
+						<li>Reglas</li>
+						<li>Preguntas!</li>
+					</ul>
+					<p>
+						Pero antes... A little about me
+					</p>
+				</section>
+				<section>
+					<img style="border-radius: 50%; height: 280px;" class="demo-logo" src="https://avatars3.githubusercontent.com/u/32345857?s=460&u=2e218a8e8b7dca8deecd219439feec069206784c&v=4" alt="A photo of Daiana"/>
+					<h2>
+						Daiana Kalanit Szwimer
+					</h2>
+					<p>
+						@uhhdai
+					</p>
+				</section>
+				<section data-auto-animate>
+					<h2>Pero... ¿Qué es React?</h2>
+					<aside class="notes">
+						React es una biblioteca de JavaScript para construir interfaces de usuario. Permite componer UIs complejas de pequeñas y aisladas piezas de código llamadas “componentes”.
+						Les mentiría si les dijera que en menos de una hora ahora mismo vamos a aprender qué es React y vamos a poder armar una aplicación desde 0 porque una biblioteca tan compleja como React es casi imposible aprenderla en esa cantidad de tiempo.
+						Vamos a hacer una intro para poder entender los Hooks y para que, cuando el día de mañana se pongan a leer la documentación y levanten su aplicación se acuerden y digan ah, este concepto lo dijo Daiu en la charla de WWCBA y, si el objetivo de hoy se cumple, deberían poder entender todo de manera mucho más fácil
+					</aside>
+				</section>
+				<section data-auto-animate>
+					<h2>Pero... ¿Qué es React?</h2>
+					<pre><code data-trim data-line-numbers="|17,15,16|5,17,15,16|2,9,12,20|5|23,24,25,26">
+							class Square extends React.Component {
+							  render() {
+								return (
+								  &lt;button className="square"&gt;
+									{this.props.value} Texto
+									Texto adicional que se renderiza
+								  &lt;/button&gt;
+								);
+							  }
+							}
+							class Game extends React.Component {
+							  render() {
+								return (
+								  &lt;div className="game"&gt;
+									&lt;Square value="Cuadrado 1"/&gt;
+									&lt;Square value="Cuadrado 2"/&gt;
+									&lt;Square value="Cuadrado 3"/&gt;
+								  &lt;/div&gt;
+								);
+							  }
+							}
+
+							ReactDOM.render(
+							  &lt;Game /&gt;,
+							  document.getElementById('root')
+							);
+					</code></pre>
+					<aside class="notes">
+						Bueno como verán ya arrancamos con código, repito, hay conceptos que hay que saber antes de meterse de una a usar React pero ese no es nuestro objetivo de hoy como mencioné antes
+						Acá tenemos dos componentes: Game y Square. Se ve en el código que Game invoca a Square 3 veces. Qué significa esto? Que en nuestro navegador vamos a ver justamente a estos componentes
+						Un componente acepta parámetros, llamados props (abreviatura de “propiedades”)
+						Usamos props para pasar información de padres a hijos, nunca al revés, piensen en una catarata que el agua cae siempre de arriba hacia abajo. Las props son un objeto de JS {} pero el componente hijo que las recibe no las puede mutar!
+						El método render retorna una descripción de lo que queremos dibujar en la pantalla y es una función que tienen que tener implementada todos los componentes de React. Como ven, es una función y tiene un return, nada nuevo acá. Lo interesante es que esto que vemos en el return es lo que vamos a ver dibujado en la pantalla
+						Lo que está entre llaves dentro del método render es código JS
+						Y finalmente abajo de todo le decimos a react dónde queremos dibujar, los que están familairizados con desarrollo web, la línea del getElementById ya la conocemos, básicamente le decimos a React que dibuje en el div cuyo id es root
+					</aside>
+				</section>
+				<section data-auto-animate data-background-iframe="https://codepen.io/daiuszw/pen/bGpgWPq?editors=0010">
+				</section>
+			</div>
+		</div>
+
+		<script src="reveal.js/dist/reveal.js"></script>
+		<script src="reveal.js/plugin/notes/notes.js"></script>
+		<script src="reveal.js/plugin/markdown/markdown.js"></script>
+		<script src="reveal.js/plugin/highlight/highlight.js"></script>
+		<script>
+			Reveal.initialize({
+				hash: true,
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+
+</html>
