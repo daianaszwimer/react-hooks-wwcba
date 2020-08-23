@@ -197,9 +197,56 @@
 						Bien, esto que vemos acá es cómo se maneja el estado con componentes de clase. Ahora que aprendimos esto, podemos ir a ver los hooks
 					</aside>
 				</section>
-				<section data-auto-animate data-background-iframe="https://codepen.io/daiuszw/pen/mdPRwYB?editors=0011">
+				<section data-auto-animate>
+					<h2 data-id="hooks">React Hooks</h2>
+					<img src="https://media1.tenor.com/images/0d34b4bc9601f3d2668e2bafa13632cb/tenor.gif?itemid=10159707" alt="Patrick Hook"/>
 					<aside class="notes">
-						Bien, esto que vemos acá es cómo se maneja el estado con componentes de clase. Ahora que aprendimos esto, podemos ir a ver los hooks
+						Bueno, hook significa gancho. Los hooks son funciones que te permiten "engancharte" al estado de React y al ciclo de vida de sus componentes - aún no sabemos que significa esto último pero ya veremos
+						React nos da un par de Hooks y hasta podemos crear nuevos si necesitamos
+						Lo interesante de los hooks es que nos da un montón de funcionalidad que antes no teníamos en componentes funcionales
+						Los componentes funcionales son funciones que NO son de clase, sino que son una función cuyo return es lo que se dibuja en la pantalla
+						A diferencia de los componentes de clase no tienen constructor ni render ni existe this, entre otras cosas. Recordemos que en un caso estamos hablando de una clase y en otro de una función
+					</aside>
+				</section>
+				<section data-auto-animate>
+					<h2 data-id="hooks" style="font-size: 40px;">React Hooks</h2>
+					<h2>Reglas</h2>
+					<img src="https://media3.giphy.com/media/PjD9qZSH5QFkcUTM4Y/giphy.gif?cid=ecf05e471nq1mf9phg5b5lswtb4289upfbgsze77le3p6xht&rid=giphy.gif" alt="Rules"/>
+					<aside class="notes">
+						Bien, los hooks es algo buenísimo e innovador que nos trae React pero no nos dejo usarlos de cualquier manera, hay dos reglas que hay que cumplir
+						Solo llamar Hooks en el nivel superior. No llames Hooks dentro de loops, condiciones o funciones anidadas. No me voy a meter mucho a explicar el por qué de esto porque prefiero profundizar otros temas que me parecen más importantes pero si quieren entender y saber por qué es esto en la documentación de React está explicado muy bien
+						Solo llamar Hooks desde componentes funcionales de React. No llames Hooks desde las funciones regulares de JavaScript. (Solo hay otro lugar válido para llamar Hooks: tus propios Hooks personalizados
+						Hay un plugin de linter que nos ayuda a cumplir estas reglas y si estamos metiendo la pata nos avisa
+					</aside>
+				</section>
+				<section data-auto-animate>
+					<h2 data-id="hooks" style="font-size: 40px;">React Hooks</h2>
+					<h2>Reglas</h2>
+					<a href="https://www.npmjs.com/package/eslint-plugin-react-hooks">eslint-plugin-react-hooks</a>
+					<aside class="notes">
+						Bien, los hooks es algo buenísimo e innovador que nos trae React pero no nos dejo usarlos de cualquier manera, hay dos reglas que hay que cumplir
+						Solo llamar Hooks en el nivel superior. No llames Hooks dentro de loops, condiciones o funciones anidadas. No me voy a meter mucho a explicar el por qué de esto porque prefiero profundizar otros temas que me parecen más importantes pero si quieren entender y saber por qué es esto en la documentación de React está explicado muy bien
+						Solo llamar Hooks desde componentes funcionales de React. No llames Hooks desde las funciones regulares de JavaScript. (Solo hay otro lugar válido para llamar Hooks: tus propios Hooks personalizados
+						Hay un plugin de linter que nos ayuda a cumplir estas reglas y si estamos metiendo la pata nos avisa
+					</aside>
+				</section>
+				<section data-auto-animate>
+					<h2>API</h2>
+					<ul>
+						<li class="fragment highlight-red">useState</li>
+						<li class="fragment highlight-red">useEffect</li>
+						<li>useContext</li>
+						<li>useReducer</li>
+						<li>useCallback</li>
+						<li>useMemo</li>
+						<li>useRef</li>
+						<li>useImperativeHandle</li>
+						<li>useLayoutEffect</li>
+						<li>useDebugValue</li>
+					</ul>
+					<aside class="notes">
+						Todos estos son los Hooks que React nos provee, y además de todos estos no se olviden que nosotros también podemos crear hooks personalizados si quisiéramos
+						Hoy vamos a ver primer useState y después useEffect
 					</aside>
 				</section>
 			</div>
