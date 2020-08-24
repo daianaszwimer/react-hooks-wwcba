@@ -190,7 +190,7 @@
 					</code></pre>
 					<aside class="notes">
 						El estado se declara en el constructor
-						El estado al igual que las props es un objeto de JS, con la diferencia que este sí puede ser modificado llamando a una función llamada setState.
+						El estado al igual que las props es un objeto de JS, con la diferencia que este sí puede ser modificado -nunca directamente- llamando a una función llamada setState.
 						setState recibe un objeto con lo que queremos modificar del estado. Si vamos a modificar el estado dependiendo del valor del estado en vez de un objeto le pasamos una función que recibe como parámetro el estado anterior.
 						Esto se hace porque setState es asincrónico y no se puede confiar en los valores que está en this.state
 					</aside>
@@ -208,7 +208,7 @@
 						React nos da un par de Hooks y hasta podemos crear nuevos si necesitamos
 						Lo interesante de los hooks es que nos da un montón de funcionalidad que antes no teníamos en componentes funcionales
 						Los componentes funcionales son funciones que NO son de clase, sino que son una función cuyo return es lo que se dibuja en la pantalla
-						A diferencia de los componentes de clase no tienen constructor ni render ni existe this, entre otras cosas. Recordemos que en un caso estamos hablando de una clase y en otro de una función
+						A diferencia de los componentes de clase no tienen constructor ni render, entre otras cosas. Recordemos que en un caso estamos hablando de una clase y en otro de una función
 					</aside>
 				</section>
 				<section data-auto-animate>
@@ -254,6 +254,9 @@
 				</section>
 				<section data-auto-animate>
 					<h2>useState</h2>
+					<pre><code data-trim>
+					    const [ number, setNumber ] = useState(0);
+					</code></pre>
 					<aside class="notes">
 						useState es un hook que nos permite agregarle estado a un componente funcional.
 						Es una función que recibe un argumento y retorna un array
@@ -399,6 +402,218 @@
 					<aside class="notes">
 						Analicemos cómo hacíamos antes y cómo hacemos ahora.
 					</aside>
+				</section>
+				<section data-auto-animate>
+					<h2>Ciclos de vida de un componente</h2>
+					<img height="300px" src="https://media1.giphy.com/media/2h8BdeXxhGGB2/giphy.gif?cid=ecf05e478qusn95lo26vp514cy91fyxzmkydqldkymvzjmlu&rid=giphy.gif" alt="Circle Of Life"/>
+					<aside class="notes">
+						Los componentes de clase -no los funcionales- tienen un ciclo de vida. Cuando el componente se inserta en la vista, se dice que se "monta" y cuando se saca de la vista se "desmonta". Cuando estos eventos ocurren se ejecutan las
+						funciones componentDidMount y componentWillUnmount. Se usa por ejemplo si quiero setear un listener en una tecla y después lo quiero sacar cuando el componente deja de existir.
+					</aside>
+				</section>
+				<section data-auto-animate>
+					<h2>Ciclos de vida de un componente</h2>
+					<pre><code data-trim>
+					    componentDidMount() {
+					    }
+					    componentWillUnmount() {
+					    }
+					</code></pre>
+					<aside class="notes">
+						Los componentes de clase -no los funcionales- tienen un ciclo de vida. Cuando el componente se inserta en la vista, se dice que se "monta" y cuando se saca de la vista se "desmonta". Cuando estos eventos ocurren se ejecutan las
+						funciones componentDidMount y componentWillUnmount. Se usa por ejemplo si quiero setear un listener en una tecla y después lo quiero sacar cuando el componente deja de existir.
+						Otro ciclo de vida y el último que vamos a ver en esta charla a pesar de que hay más, es cuando el componente se actualiza, y la función que se ejecuta es componentDidUpdate
+					</aside>
+				</section>
+				<section data-auto-animate>
+					<h2>Ciclos de vida de un componente</h2>
+					<pre><code data-trim>
+					    componentDidMount() {
+					    }
+					    componentDidUpdate() {
+					    }
+					    componentWillUnmount() {
+					    }
+					</code></pre>
+					<aside class="notes">
+						Los componentes de clase -no los funcionales- tienen un ciclo de vida. Cuando el componente se inserta en la vista, se dice que se "monta" y cuando se saca de la vista se "desmonta". Cuando estos eventos ocurren se ejecutan las
+						funciones componentDidMount y componentWillUnmount. Se usa por ejemplo si quiero setear un listener en una tecla y después lo quiero sacar cuando el componente deja de existir.
+						Otro ciclo de vida y el último que vamos a ver en esta charla a pesar de que hay más, es cuando el componente se actualiza, y la función que se ejecuta es componentDidUpdate
+						Esto puede resultar incómodo porque a veces nos obliga a dividir la lógica cuando no queremos, por ejemplo si en el componentDidMount queremos ejecutar lo mismo que en el componentDidUpdate
+						Además, como componentDidUpdate se actualiza en cada render, casi siempre adentro vamos a encontrar un if para evitar ejecutar código tantas veces si no es necesario.
+						Por ejemplo, quiero traer data de un usuario entonces en el componentDidMount lo hago. Pero el usuario puede cambiar porque entonces también lo voy a tener que hacer en el componentDidUpdate solo si el usuario cambió, ya que esa función se ejecuta siempre que se se actualiza una prop o el estado.
+					</aside>
+				</section>
+				<section data-auto-animate data-background-iframe="https://codepen.io/daiuszw/pen/BaKpmww?editors=0010">
+					<aside class="notes">
+						Acá tenemos un ejemplo un tanto complejo pero si me prestan atención me van a poder seguir.
+						Tenemos un componente de clase que se llama app, tiene en el estado 3 valores...
+					</aside>
+				</section>
+				<section data-auto-animate>
+					<h2>useEffect</h2>
+					<pre><code data-trim data-line-numbers="1|2,3,4|5,6,7|8,9,10|11,12,13,14,15,16|17,18,19,20,21,22">
+						useEffect(funcion, [dependencias])
+						useEffect(() => {
+						  /* funcion */
+						})
+						useEffect(() => {
+						  /* funcion que lee la variable contador */
+						}, [contador])
+						useEffect(() => {
+						  /* funcion que lee la variable contador */
+						}, [])
+						useEffect(() => {
+						  /* funcion */
+						  return () => {
+						    /* otra funcion! la de cleanup */
+						  }
+						})
+						useEffect(() => {
+						  /* funcion */
+						  return () => {
+						    /* otra funcion! la de cleanup */
+						  }
+						}, [])
+					</code></pre>
+					<aside class="notes">
+						useEffect es un hook, por lo tanto es una función. Recibe dos argumentos, una función y un array de dependencias.
+						1 caso: se ejecuta siempre que se actualiza el componente, cuando se monta y desmonta. Es equivalente a las 3 funciones de ciclo de vida que vimos antes
+						2 caso: component did mount y did update que se ejecuta solo si contador cambia. si lee estado o props, se especifica acá
+						3 caso: component did mount y will unmount. OJO que si lees el estado o props, contador por ejemplo, va a tener el valor inicial
+						4 caso: se ejecuta la funcion en el component did mount, en el update se ejecuta el cleanup y luego la funcion, y en el didmount se ejecuta el cleanup
+						5: combinacion de los 2 casos anteriores: equivalente a component did mount y will unmount con cleanup
+					</aside>
+				</section>
+				<section data-auto-animate data-background-iframe="https://codepen.io/daiuszw/pen/zYqNPob?editors=0010">
+				</section>
+				<section>
+					<h4>useEffect: Antes vs Después</h4>
+					<div style="display: flex; flex-direction: row;justify-content: center;height: 600px;">
+						<pre style="width: 70%;"><code data-trim>
+							class App extends React.Component {
+							   constructor(props) {
+								super(props);
+								this.state = {
+								  persons: [],
+								  currentPersonId: 1,
+								  posts: [],
+								};
+							  }
+
+							  componentDidMount() {
+								  fetch('https://jsonplaceholder.typicode.com/users')
+								  .then(data => data.json())
+								  .then(persons => this.setState({
+									persons: persons,
+								  }));
+
+								  fetch('https://jsonplaceholder.typicode.com/posts?userId='+this.state.currentPersonId)
+								  .then((response) => response.json())
+								  .then((posts) => this.setState({posts: posts}))
+							  }
+
+							  componentDidUpdate(_, prevState) {
+								if(this.state.currentPersonId !== prevState.currentPersonId) {
+								  console.log(this.state.currentPersonId)
+								  fetch('https://jsonplaceholder.typicode.com/posts?userId='+this.state.currentPersonId)
+								  .then((response) => response.json())
+								  .then((posts) => this.setState({posts: posts}))
+								}
+							  }
+
+							  componentWillUnmount() {
+								// ...
+							  }
+
+							  handlePersonChange = event => {
+								this.setState({
+								  currentPersonId: event.target.value,
+								})
+							  }
+
+							  render() {
+								return (
+								  &lt;div className='pure-u'&gt;
+									&lt;h1&gt;Personas&lt;/h1&gt;
+									&lt;Table
+									  data={this.state.persons}
+									  onSelectChange={this.handlePersonChange}
+									  currentPersonId={this.state.currentPersonId}
+									/&gt;
+									{this.state.posts.map(post => &lt;div key={post.id}&gt;
+										&lt;h4&gt;{post.title}&lt;/h4&gt;
+										&lt;p&gt;{post.body}&lt;/p&gt;
+									&lt;/div&gt;)}
+								  &lt;/div&gt;
+								);
+							  }
+							}
+
+						</code></pre>
+						<pre style="width: 70%;"><code data-trim>
+							const App = (props) => {
+							  const [persons, setPersons] = useState([])
+							  const [currentPersonId, setCurrentPersonId] = useState(1)
+							  const [posts, setPosts] = useState([])
+
+
+							  useEffect(() => {
+							  	fetch('https://jsonplaceholder.typicode.com/users')
+							  	.then(data => data.json())
+							  	.then(persons => setPersons(persons));
+							  }, [])
+
+							  useEffect(() => {
+							    console.log(currentPersonId)
+							    fetch('https://jsonplaceholder.typicode.com/posts?userId='+currentPersonId)
+							    .then((response) => response.json())
+							    .then((posts) => setPosts(posts))
+							  }, [currentPersonId])
+
+							  handlePersonChange = event => {
+							    setCurrentPersonId(event.target.value)
+							  }
+
+							  return (
+								  &lt;div className='pure-u'&gt;
+									&lt;h1&gt;Personas&lt;/h1&gt;
+									&lt;Table
+									  data={persons}
+									  onSelectChange={handlePersonChange}
+									  currentPersonId={currentPersonId}
+									/&gt;
+									{posts.map(post => &lt;div key={post.id}&gt;
+										&lt;h4&gt;{post.title}&lt;/h4&gt;
+										&lt;p&gt;{post.body}&lt;/p&gt;
+									&lt;/div&gt;)}
+								  &lt;/div&gt;
+								);
+							  }
+						</code></pre>
+					</div>
+					<aside class="notes">
+						Analicemos cómo hacíamos antes y cómo hacemos ahora.
+					</aside>
+				</section>
+				<section data-auto-animate>
+					<h2>Genial entonces... Siempre uso hooks?</h2>
+				</section>
+				<section data-auto-animate>
+					<h2>Genial entonces... Siempre uso hooks?</h2>
+					<h2>No</h2>
+					<aside class="notes">
+						Hay casos donde por algún motivo quizás queremos usar componentes de clase y no está mal.
+						Es una cuestión de gustos. Como todo en sistemas, depende de lo que querés hacer, no hay una ley que te obligue a sí o sí implementar hooks solo poque es más nuevo y bonito.
+					</aside>
+				</section>
+				<section data-auto-animate>
+					<h2>¿Preguntas?</h2>
+					<img height="400px" src="https://media1.giphy.com/media/DUrdT2xEmJWbS/giphy.gif?cid=ecf05e47mkltj1i1qf66j7q70nroebznh8zpc4i6g4l0qo2p&rid=giphy.gif" alt="Questions?"/>
+				</section>
+				<section data-auto-animate>
+					<h2>¡Gracias!</h2>
+					<img height="400px" src="https://media2.giphy.com/media/5wFRRdOY6pXNl76PbN/giphy.gif" alt="Thank you"/>
 				</section>
 			</div>
 		</div>
